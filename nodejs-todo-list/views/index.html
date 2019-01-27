@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>my todos</title>
+</head>
+<body>
+<h2>
+    Next on my agenda
+</h2>
+<p><a href="/save">add todo</a></p>
+<ul>
+{{#todos}}
+    <li><a href="/detail?id={{id}}"><span>{{todoTitle}} {{date}}</span></li>
+    <button type="button"><a href="/edit?id={{id}}">Edit</a></button>
+    <button type="button"><a href="/delete?id={{id}}">Delete</a></button>
+{{/todos}}   
+</ul>
+</body>
+</html>

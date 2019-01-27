@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edit Todo</title>
+</head>
+<body>
+<h1>Edit Todo</h1>
+<button type="submit"><a href="/">View all Todo</a></button>
+<form action="/save" method="post">
+    <p>Todo title: </p>
+    <input name="todoTitle" id="todo-title" type="text" value="{{todo.todoTitle}}">
+    <p>Todo description: </p>
+    <input name="todoDescription" id="todo-description" type="text" value="{{todo.todoDescription}}">
+    <br>
+    <input type="hidden" name="id" value="{{todo.id}}">
+    <input type="submit" name="submit" value="submit">
+</form>
+</body>
+</html>
