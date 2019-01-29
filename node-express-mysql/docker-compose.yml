@@ -1,16 +1,29 @@
 version: "3.2"
 services:
 
-
+  node:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./node/:/home/node/app
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 3000:3000
+    command: npm start
 
   adminer:
     image: adminer
-    network_mode: host
-    # networks:
-    #   - frontend
-    #   - backend
+    networks:
+      - frontend
+      - backend
     ports:
-      - 8080:8080    
+      - 8080:8080
+
   db:
     image: mysql:${MYSQL_VERSION:-latest}
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
@@ -19,12 +32,12 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/sql/:/docker-entrypoint-initdb.d/
-    network_mode: host
-    # networks:
-    #   - backend
+    networks:
+      - backend
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     container_name: mysql
+
 networks:
   frontend:
   backend:

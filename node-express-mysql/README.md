@@ -13,17 +13,18 @@ This application is part of the Todo List sample circut. References to other imp
 The overall file structure is as follows:
 
 ```text
-/nodejs-todo-list/
+/node-express-mysql/
 └── mysql
 │   └── sql
 │       └── schema.sql
-├── views
-│   └── *.html
+├── node
+    ├── views
+    │   └── *.html
+    ├── app.js
+    ├── package-lock.json
+    └── package.json
 ├── .env
-├── app.js
-├── docker-compose.yml
-├── package-lock.json
-├── package.json
+└── docker-compose.yml
 ```
 
 ## MySQL
@@ -46,7 +47,7 @@ volumes:
 
 ## Prerequisites
 
-You will need to install [docker](https://docs.docker.com/install/), [docker-compose](https://docs.docker.com/compose/install).
+You will need to install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install).
 
 ## Start
 
@@ -54,8 +55,16 @@ Bring up the entire stack with:
 
 ```bash
 $ docker-compose up -d
-$ npm install
-$ node app.js
 ```
 
 The application can then be located at [http://localhost:3000](http://localhost:3000).
+
+## Adminer
+
+You can view that the database is up and schema was created with Adminer (previously known as phpMyAdmin). Navigate to [http://localhost:8080](http://localhost:8080) and login:
+
+* System: MySQL
+* Server: db
+* Username: root
+* Password: rootpassword
+* Database: todolist

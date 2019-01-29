@@ -1,3 +1,4 @@
+const sleep = require("sleep");
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
@@ -8,39 +9,48 @@ const mustacheExpress = require('mustache-express');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// connection to the database
-const db = mysql.createConnection ({
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'rootpassword',
-  database: 'todolist'
-});
-
 // connect to database
-db.connect((err) => {
-  if (err) {
-      throw err;
-  }
-  console.log('Connected to database');
-});
-global.db = db;
+new Promise((resolve, reject) => {
+  (function retryDb(attempt = 0, db = mysql.createConnection ({
+    host: 'db',
+    user: 'root',
+    password: 'rootpassword',
+    database: 'todolist'
+  })){
+    db.connect((err) => {
+      if (err) {
+        if(err.code == "ECONNREFUSED"){
+          if( attempt >= 10 ) throw new Error('Unable to connect to database after 10 attempts!');
+          console.log('Waiting for database ...');
+          sleep.sleep(5);
+          return retryDb(attempt++);
+        }        
+        else
+          reject(err);
+      } else{
+        console.log("Connected to the database!")
+        resolve(db);
+      }
+    });
+  })()
+}).then(conn => { global.db = conn })
 
 var TodoRepo = {
   findAll:function(callback){
-    return db.query("select * from todo",callback);
+    return global.db.query("select * from todo",callback);
   },
   findById:function(id,callback){
-    return db.query("select * from todo where id=?",[id],callback);
+    return global.db.query("select * from todo where id=?",[id],callback);
   },
   save:function(Todo,callback){
     if( Todo.id ){
-      return db.query("update todo set todoTitle=?,todoDescription=? where id=?",[Todo.todoTitle,Todo.todoDescription,Todo.id],callback);
+      return global.db.query("update todo set todoTitle=?,todoDescription=? where id=?",[Todo.todoTitle,Todo.todoDescription,Todo.id],callback);
     }else{
-      return db.query("insert into todo (todoTitle,todoDescription,date) values (?,?,now())",[Todo.todoTitle,Todo.todoDescription],callback);      
+      return global.db.query("insert into todo (todoTitle,todoDescription,date) values (?,?,now())",[Todo.todoTitle,Todo.todoDescription],callback);      
     }
   },
   deleteById:function(id,callback){
-    return db.query("delete from todo where id=?",[id],callback);
+    return global.db.query("delete from todo where id=?",[id],callback);
   }
 };
 

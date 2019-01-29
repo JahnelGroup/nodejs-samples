@@ -4,7 +4,7 @@
   "description": "nodejs todo list",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm install && node app.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "mustache-express": "^1.2.8",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "sleep": "^6.0.0"
   }
 }
