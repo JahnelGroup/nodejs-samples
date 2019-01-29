@@ -43,13 +43,11 @@ volumes:
     - ./mysql/sql/:/docker-entrypoint-initdb.d/
 ```
 
-## Run
-
-### Prerequisites
+## Prerequisites
 
 You will need to install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install).
 
-### Start
+## Run
 
 Bring up the entire stack with:
 
