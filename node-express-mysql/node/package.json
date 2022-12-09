@@ -14,7 +14,7 @@
   "license": "MIT",
   "homepage": "https://github.com/JahnelGroup",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "mustache-express": "^1.2.8",
     "mysql": "^2.16.0",
     "sleep": "^6.0.0"
